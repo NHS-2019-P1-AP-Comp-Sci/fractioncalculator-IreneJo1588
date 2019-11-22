@@ -112,7 +112,22 @@ public class FracCalc {
 	    	}
 	    	denominator2 = frac2.substring(slash2 + 1);
 	    }
-
+	   /* int frac10 = Integer.parseInt(frac1);
+	    int frac20 = Integer.parseInt(frac2);
+	    int wholeNum10 = Integer.parseInt(wholeNum1);
+	    int wholeNum20 = Integer.parseInt(wholeNum2);
+	    int fraction10 = Integer.parseInt(fraction1);
+	    int fraction20 = Integer.parseInt(fraction2);
+	    int numerator10 = Integer.parseInt(numerator1);
+	    int numerator20 = Integer.parseInt(numerator2);
+	    int denominator10 = Integer.parseInt(denominator1);
+	    int denominator20 = Integer.parseInt(denominator2);
+    		    
+	    //Solving the equations
+	    if (wholeNum10 != 0) {
+	    	h
+	    }
+	    */
 	    
 	   	String yoYoDeleteThisSoon = "whole:" + wholeNum2 + " numerator:" + 
 	   	        numerator2 + " denominator:" + denominator2;
