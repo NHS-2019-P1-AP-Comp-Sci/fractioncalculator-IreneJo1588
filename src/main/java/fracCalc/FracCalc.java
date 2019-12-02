@@ -11,7 +11,7 @@ public class FracCalc {
     	
     	System.out.println("Welcome to Fraction Calculator!");
     	System.out.println("What fraction equation would you like solved?");
-
+ 
         String input = "";
         input = userInput.nextLine();
 		while (!input.equals("quit")) {
@@ -23,12 +23,13 @@ public class FracCalc {
      
     
     }
-
+    // method that returns the answer 
     public static String produceAnswer(String input){
     	String underScore = "_";
     	String slash = "/";
     	String wholeNum1 = "0";
     	String wholeNum2 = "0";
+    	String wholeNum3 = "0";
     	String fraction1 = "0";
     	String fraction2 = "0";
     	String numerator1 = "0";
@@ -39,17 +40,20 @@ public class FracCalc {
     	int mark2 = 0;
     	int length1 = 0;
     	int length2 = 0;
+    	int answerTop = 0;//numerator and denominator
+    	int answerBot = 0;
     	
   
     	
     	// finding operator sign
 	    int space1 = input.indexOf(" ");
-	    char operator1 = input.charAt(space1 + 1);
-	    
+	    String operator = input.substring(space1 + 1, space1 + 2);
+	   
 	    // dividing equation into two fractions
 	    String frac1 = input.substring(0,space1);
 	    String frac2 = input.substring(space1 + 3);
-	    
+	  
+	   
 	    //finding where _ is in the equation
 	    mark1 = frac1.indexOf(underScore);
 	    mark2 = frac2.indexOf(underScore);
@@ -97,7 +101,7 @@ public class FracCalc {
 	    //finding the numerator and denominator
 	    if (fraction1 != "") {
 	    	if (frac1.indexOf(underScore) != -1) {
-	    		numerator1 = frac1.substring(mark1,slash1);
+	    		numerator1 = frac1.substring(mark1 + 1 ,slash1);
 	    	}else {
 	    		numerator1 = frac1.substring(0,slash1);
 	    	}
@@ -112,27 +116,61 @@ public class FracCalc {
 	    	}
 	    	denominator2 = frac2.substring(slash2 + 1);
 	    }
-	   /* int frac10 = Integer.parseInt(frac1);
-	    int frac20 = Integer.parseInt(frac2);
+	    
 	    int wholeNum10 = Integer.parseInt(wholeNum1);
 	    int wholeNum20 = Integer.parseInt(wholeNum2);
-	    int fraction10 = Integer.parseInt(fraction1);
-	    int fraction20 = Integer.parseInt(fraction2);
 	    int numerator10 = Integer.parseInt(numerator1);
 	    int numerator20 = Integer.parseInt(numerator2);
 	    int denominator10 = Integer.parseInt(denominator1);
 	    int denominator20 = Integer.parseInt(denominator2);
-    		    
-	    //Solving the equations
-	    if (wholeNum10 != 0) {
-	    	h
-	    }
-	    */
 	    
-	   	String yoYoDeleteThisSoon = "whole:" + wholeNum2 + " numerator:" + 
-	   	        numerator2 + " denominator:" + denominator2;
-        
+	    //solving for the whole numbers
+	    if (wholeNum10 > 0) {
+	    	int wholeTimesDeno1 = wholeNum10 * denominator10;
+	    	numerator10 = wholeTimesDeno1 + numerator10;
+	    }
+	    else if(wholeNum10 < 0) {
+	    	int wholeTimesDeno1 = Math.abs(wholeNum10 * denominator10);
+	    	numerator10 = (wholeTimesDeno1 + numerator10) * -1;
+	    }
+	    if (wholeNum20 > 0) {
+	    	int wholeTimesDeno2 = wholeNum20 * denominator20;
+	    	numerator20 = wholeTimesDeno2 + numerator20;
+	    }
+	    else if(wholeNum20 < 0) {
+	    	int wholeTimesDeno2 = Math.abs(wholeNum20 * denominator20);
+	    	numerator20 = (wholeTimesDeno2 + numerator20) * -1;
+	    }
+	    
+	    //equalizing the denominator and numerator
+	    int denominator101 = denominator10 * denominator20;
+	    int denominator202 = denominator10 * denominator20;
+	    int numerator101 = numerator10 * denominator20;
+	    int numerator202 = numerator20 * denominator10;
+	    denominator10 = denominator101;
+	    denominator20 = denominator202;
+	    numerator10 = numerator101;
+	    numerator20 = numerator202;
+	    //putting them together
+	    if(operator.equals("+")) {
+	    	answerTop = numerator10 + numerator20;
+	    	answerBot = denominator10;
+	    	
+	    }else if(operator.equals("-")){
+	    	answerTop = numerator10 - numerator20;
+	    	answerBot = denominator10;
+	    	
+	    }else if(operator.equals("*")){
+	    	answerTop = numerator10 * numerator20;
+	    	answerBot = denominator10 * denominator20;
+	    	
+	    }else if(operator.equals("/")){
+	    	answerTop = numerator10 * denominator20;
+	    	answerBot = denominator10 * numerator20;
+	    }
+        	    
+	    
 
-        return(yoYoDeleteThisSoon);
+        return(answerTop + "/" + answerBot);
     }
 }
