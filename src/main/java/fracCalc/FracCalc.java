@@ -6,7 +6,7 @@ package fracCalc;
 import java.util.Scanner;
 public class FracCalc {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
     	Scanner userInput = new Scanner(System.in);
     	
     	System.out.println("Welcome to Fraction Calculator!");
@@ -19,17 +19,15 @@ public class FracCalc {
 	       	System.out.println(num);
 	       	System.out.println("Type \"quit\" to end");
 	       	input = userInput.nextLine();
-        }
-     
-    
+		}
     }
+    
     // method that returns the answer 
-    public static String produceAnswer(String input){
+    public static String produceAnswer(String input) {
     	String underScore = "_";
     	String slash = "/";
     	String wholeNum1 = "0";
     	String wholeNum2 = "0";
-    	String wholeNum3 = "0";
     	String fraction1 = "0";
     	String fraction2 = "0";
     	String numerator1 = "0";
@@ -40,27 +38,45 @@ public class FracCalc {
     	int mark2 = 0;
     	int length1 = 0;
     	int length2 = 0;
-    	int answerTop = 0;//numerator and denominator
+    	int answerTop = 0;
     	int answerBot = 0;
-    	
-  
-    	
+    	int answerWhole = 0;
+    	String sign1 = "";
+    	String sign2 = "";
+    	int sign10 = 1;
+    	int sign20 = 1;
+    
     	// finding operator sign
 	    int space1 = input.indexOf(" ");
 	    String operator = input.substring(space1 + 1, space1 + 2);
-	   
-	    // dividing equation into two fractions
-	    String frac1 = input.substring(0,space1);
-	    String frac2 = input.substring(space1 + 3);
 	  
-	   
+	    // dividing equation into two fractions
+	    //finding if positive or negative
+	    String frac1 = input.substring(0,space1);
+
+	    if(frac1.indexOf("-") != -1) {
+	    	sign1 = frac1.substring(0,1);
+    		frac1 = frac1.substring(1);
+    	}
+	    String frac2 = input.substring(space1 + 3);
+    	if(frac2.indexOf("-")!= -1) {
+    		sign2 = frac2.substring(0,1);
+    		frac2 = frac2.substring(1);
+    	}
+    	if(sign1.indexOf("-") != -1) {
+		    sign10 = -1;
+	    }
+	    if(sign2.indexOf("-") != -1) {
+		    sign20 = -1;
+	    }
+	 	    
 	    //finding where _ is in the equation
 	    mark1 = frac1.indexOf(underScore);
 	    mark2 = frac2.indexOf(underScore);
 	    //finding where / is in the equation
 	    int slash1 = frac1.indexOf(slash);
 	    int slash2 = frac2.indexOf(slash);
-	    
+	   
 	    // finding whole numbers for each frac1
 		if(mark1 !=  -1) {
 	    	wholeNum1 = frac1.substring(0, mark1);
@@ -80,7 +96,7 @@ public class FracCalc {
  	    	wholeNum2 = frac2;
  	    	length2 = 2;
 	    }
-	    
+	   
 	    // finding the fraction parts of the equation
 	    if (length1 == 1) {
 	    	fraction1 = frac1.substring(mark1+1);
@@ -117,13 +133,14 @@ public class FracCalc {
 	    	denominator2 = frac2.substring(slash2 + 1);
 	    }
 	    
+	    //String to integer
 	    int wholeNum10 = Integer.parseInt(wholeNum1);
 	    int wholeNum20 = Integer.parseInt(wholeNum2);
 	    int numerator10 = Integer.parseInt(numerator1);
 	    int numerator20 = Integer.parseInt(numerator2);
 	    int denominator10 = Integer.parseInt(denominator1);
 	    int denominator20 = Integer.parseInt(denominator2);
-	    
+	   
 	    //solving for the whole numbers
 	    if (wholeNum10 > 0) {
 	    	int wholeTimesDeno1 = wholeNum10 * denominator10;
@@ -153,24 +170,64 @@ public class FracCalc {
 	    numerator20 = numerator202;
 	    //putting them together
 	    if(operator.equals("+")) {
-	    	answerTop = numerator10 + numerator20;
+	    	answerTop = (sign10 * numerator10) + (sign20 * numerator20);
 	    	answerBot = denominator10;
 	    	
 	    }else if(operator.equals("-")){
-	    	answerTop = numerator10 - numerator20;
+	    	answerTop = (sign10 * numerator10) - (sign20 * numerator20);
 	    	answerBot = denominator10;
 	    	
 	    }else if(operator.equals("*")){
-	    	answerTop = numerator10 * numerator20;
+	    	answerTop = sign10 * numerator10 * sign20 * numerator20;
 	    	answerBot = denominator10 * denominator20;
 	    	
 	    }else if(operator.equals("/")){
-	    	answerTop = numerator10 * denominator20;
+	    	answerTop = sign10 * numerator10 * sign20 * denominator20;
 	    	answerBot = denominator10 * numerator20;
 	    }
-        	    
+	    int justNum = 0;
+	   
+	    //calculating whole numbers
+	    if(answerTop <= -1 ) {
+	    	answerTop = answerTop * -1;  
+	    	justNum = 1;
+			while(answerTop >= answerBot) {
+			        	answerTop = answerTop - answerBot;
+			        	answerWhole ++;    	
+			}
+	    }else {  	
+			while(answerTop >= answerBot) {
+			        	answerTop = answerTop - answerBot;
+			        	answerWhole ++;
+			}
+	    }	
+	   
+	    //reducing fraction
+		for(int i = 2; i <= answerBot; i ++) {
+		    while(answerTop % i == 0 && answerBot % i == 0) {
+		    		answerTop = answerTop/ i;
+		    		answerBot = answerBot/ i;
+		    }
+	    }
+		
+		//giving the positive and negative signs back
+		int sign = 1;
+		if(justNum == 1) {
+			sign = -1;
+		}
+		
+		//organizing returning numbers
+	    if (answerWhole != 0 && answerTop != 0) {
+	    	return(sign * answerWhole + "_"  + answerTop + "/" + answerBot);
+	    }else if(answerTop == 0) {
+	    	return("" + sign * answerWhole);
+	    }else{
+	    	return(sign * answerTop + "/" + answerBot);
+	    }
 	    
-
-        return(answerTop + "/" + answerBot);
     }
+    
 }
+	  
+    
+
